@@ -1246,9 +1246,13 @@ int main(void) {
     if (!RegisterClassExW(&wc)) return 1;
 
     int w = MulDiv(1240, a->dpi, 96), hgt = MulDiv(780, a->dpi, 96);
+    int sw = GetSystemMetrics(SM_CXSCREEN), sh = GetSystemMetrics(SM_CYSCREEN);
+    if (w > sw - 120) w = sw - 120;
+    if (hgt > sh - 120) hgt = sh - 120;
+    if (w < 640) w = 640;
+    if (hgt < 400) hgt = 400;
     RECT wr = { 0, 0, w, hgt };
     AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW | WS_VSCROLL | WS_HSCROLL, FALSE);
-    int sw = GetSystemMetrics(SM_CXSCREEN), sh = GetSystemMetrics(SM_CYSCREEN);
     HWND hwnd = CreateWindowExW(WS_EX_ACCEPTFILES, HPCS_CLASS, HPCS_TITLE,
                                 WS_OVERLAPPEDWINDOW | WS_VSCROLL | WS_HSCROLL,
                                 (sw - (wr.right - wr.left)) / 2,
