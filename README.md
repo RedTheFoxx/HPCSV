@@ -208,34 +208,6 @@ Une tâche `HPCSV: regenerate clangd database` est fournie dans `.zed/tasks.json
 
 ---
 
-## Dépannage
-
-<details>
-<summary><b>Problèmes courants</b></summary>
-
-- **« hpcs-lsp was not found »** — le binaire n'est pas compilé. Lancez `zig build` ;
-  l'extension le détectera dans `zig-out\bin` du dépôt ouvert. Sinon : `PATH`, `HPCSV_LSP`
-  (chemin complet du serveur) ou dossier de `HPCSV_BIN`.
-- **« open in spreadsheet » ne fait rien** — `hpcs-lsp` cherche `HPCSV.exe` à côté de lui,
-  puis `HPCSV_BIN`, puis dans le `PATH`. Définissez `HPCSV_BIN` si nécessaire.
-- **Diagnostics / coloration incohérents** — si l'extension communautaire `csv` est aussi
-  installée, Zed a deux fournisseurs pour le langage CSV : désactivez l'autre.
-- **`ld: cannot find …Dépots…`** — chemin accentué : voir « Compilation de l'extension Zed ».
-
-</details>
-
----
-
-## Feuille de route
-
-- **Windows d'abord** : le tableur est Win32/GDI ; les backends macOS/Linux restent à écrire.
-- Insertion/suppression de lignes et colonnes, tri par clic sur l'en-tête.
-- Pas de formules, graphiques ni types de données : HPCSV est un éditeur de CSV.
-- Le LSP utilise une synchronisation **full** (frappe à surveiller au-delà de ~20 Mio).
-- Une vue GPUI custom si l'API visuelle de Zed arrive.
-
----
-
 ## Licence
 
 MIT — voir [LICENSE](LICENSE).
