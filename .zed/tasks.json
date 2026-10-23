@@ -31,5 +31,16 @@
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "always"
+  },
+  {
+    "label": "HPCSV: prepare dev extension (ASCII copy)",
+    "command": "powershell",
+    "args": [
+      "-NoProfile",
+      "-ExecutionPolicy", "Bypass",
+      "-File", "$ZED_WORKTREE_ROOT/scripts/prepare-dev-extension.ps1"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
   }
 ]

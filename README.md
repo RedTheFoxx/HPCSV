@@ -174,6 +174,18 @@ Windows :
 
    Pour que Zed hérite de cette variable, lancez-le depuis ce terminal.
 
+3. **Chemin du dépôt avec accents** : Zed impose `--target-dir <extension>/target`.
+   MinGW `ld` ne sait pas ouvrir un chemin comme `Dépots`, donc le build Rust échoue
+   (`ld: cannot find ...`). Préparez une copie ASCII de l'extension et installez-la
+   depuis cette copie :
+
+   ```powershell
+   .\scripts\prepare-dev-extension.ps1
+   ```
+
+   Puis dans Zed : **Install Dev Extension** → `C:\hpcs-extension` (et non
+   `HPCSV\extension`). Relancez le script après toute modification de `extension/`.
+
 Après l'installation de Rust, **redémarrez Zed** pour qu'il voie `cargo`/`rustup` dans le
 `PATH`.
 
@@ -320,6 +332,9 @@ Une édition de cellule ne réécrit **que** la représentation de cette cellule
 - **Pas de diagnostics / coloration incohérente** : si l'extension communautaire `csv`
   est aussi installée, Zed a deux fournisseurs pour le langage CSV. Désactivez l'autre
   extension pour éviter l'ambiguïté.
+- **Le build de l'extension échoue avec `ld: cannot find ...Dépots...`** : c'est le
+  chemin accentué. Lancez `.\scripts\prepare-dev-extension.ps1` et installez l'extension
+  depuis `C:\hpcs-extension`.
 - **Zed ne compile pas l'extension** : voir la section « Extension Zed » (toolchain GNU
   et chemin ASCII pour `CARGO_TARGET_DIR`).
 
