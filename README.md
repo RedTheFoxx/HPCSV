@@ -118,7 +118,8 @@ Détails de conception : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Prérequis :
 
-- **Zig 0.14.1 ou plus récent** (utilisé comme compilateur C portable) ;
+- **Zig 0.14.1** (le `build.zig` utilise l'API de cette version ; les versions 0.15+
+  peuvent nécessiter des ajustements) ;
 - Windows 10/11 pour le tableur natif (le cœur et le LSP sont portables C11) ;
 - **Rust** uniquement pour compiler l’extension WASM (Zed sait aussi le faire à
   l'installation ; `wasm32-wasip2` requis).

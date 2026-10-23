@@ -741,6 +741,15 @@ static void handle_execute(const char *id, size_t idlen, const char *params) {
 
 /* ---------------------------------------------------------------- main */
 
+static int header_matches(const char *line, const char *name) {
+    while (*name) {
+        unsigned char a = (unsigned char)*line++;
+        unsigned char b = (unsigned char)*name++;
+        if (tolower(a) != tolower(b)) return 0;
+    }
+    return 1;
+}
+
 static char *read_message(size_t *out_len) {
     char line[512];
     size_t content_length = 0;
@@ -748,7 +757,7 @@ static char *read_message(size_t *out_len) {
     while (fgets(line, sizeof(line), stdin)) {
         any = 1;
         if (line[0] == '\r' || line[0] == '\n') break;
-        if (_strnicmp(line, "Content-Length:", 15) == 0)
+        if (header_matches(line, "Content-Length:"))
             content_length = (size_t)strtoul(line + 15, NULL, 10);
     }
     if (!any || content_length == 0) return NULL;
