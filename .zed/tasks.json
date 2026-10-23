@@ -1,0 +1,24 @@
+[
+  {
+    "label": "HPCSV: open current file in spreadsheet",
+    "command": "$ZED_WORKTREE_ROOT/zig-out/bin/HPCSV.exe",
+    "args": ["$ZED_FILE"],
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "never"
+  },
+  {
+    "label": "HPCSV: build (core, app, LSP)",
+    "command": "zig",
+    "args": ["build", "-Doptimize=ReleaseFast"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "HPCSV: test core",
+    "command": "zig",
+    "args": ["build", "test"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  }
+]

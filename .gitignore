@@ -1,0 +1,7 @@
+.zig-cache/
+zig-out/
+build/
+extension/target/
+*.pdb
+*.tmp
+*.csv.hpcs-*
