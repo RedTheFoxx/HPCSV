@@ -339,9 +339,7 @@ void app_paint(App *a, HDC hdc, int width, int height) {
         DrawTextW(dc, num, -1, &nr, DT_SINGLELINE | DT_VCENTER | DT_RIGHT | DT_NOPREFIX);
         if (a->doc.ragged_rows && a->doc.n_rows > 0 &&
             a->doc.rows[r].count != a->doc.rows[0].count) {
-            SetTextColor(dc, C_WARN);
-            RECT dr = { 0, y, a->gutter_w, y + a->row_h };
-            DrawTextW(dc, L"\u25cf", -1, &dr, DT_SINGLELINE | DT_VCENTER | DT_LEFT | DT_NOPREFIX);
+            fill(dc, 0, y + 4, 3, y + a->row_h - 4, C_WARN);
         }
         SelectObject(dc, old);
         vline(dc, a->gutter_w - 1, y, y + a->row_h, C_GRID);

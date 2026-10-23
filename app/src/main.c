@@ -679,6 +679,7 @@ void app_close_file(App *a) {
 
 int app_open_file(App *a, const wchar_t *path) {
     if (a->editing) edit_commit(a, 0, 0);
+    if (a->dirty_save) save_now(a);
     char *u = wide_to_utf8(path);
     if (!u) return 0;
 
@@ -721,8 +722,12 @@ int app_open_file(App *a, const wchar_t *path) {
 
     char dbuf[32];
     hpcs_delimiter_name(a->doc.delim, dbuf, sizeof(dbuf));
-    app_set_status(a, 0, L"%u rows \u00d7 %u cols \u00b7 %hs \u00b7 ready",
-                   a->doc.n_rows, a->doc.max_cols, dbuf);
+    wchar_t extra[64] = L"";
+    if (a->doc.ragged_rows)
+        _snwprintf(extra, 63, L" \u00b7 %u irregular row(s)", a->doc.ragged_rows);
+    extra[63] = 0;
+    app_set_status(a, 0, L"%u rows \u00d7 %u cols \u00b7 %hs%ls",
+                   a->doc.n_rows, a->doc.max_cols, dbuf, extra);
     InvalidateRect(a->hwnd, NULL, FALSE);
     dbg_log("open: rows=%u cols=%u sel=(%d,%d) anchor=(%d,%d) dpi=%d",
             a->doc.n_rows, a->doc.max_cols, a->sel_row, a->sel_col,
@@ -1062,6 +1067,18 @@ static LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
         return 0;
     case WM_LBUTTONDBLCLK: {
         int x = GET_X_LPARAM(lp), y = GET_Y_LPARAM(lp);
+        if (y < a->header_h && a->ncols > 0) {
+            int c = app_col_at(a, x);
+            if (c >= 0 && c < (int)a->ncols) {
+                int right = a->gutter_w + app_colx(a, (uint32_t)c + 1) - a->scroll_x;
+                if (abs(x - right) <= 4) {
+                    app_autofit_one(a, (uint32_t)c);
+                    app_scrollbars(a);
+                    InvalidateRect(hwnd, NULL, FALSE);
+                    return 0;
+                }
+            }
+        }
         int r = hit_row(a, y);
         int c = hit_col(a, x);
         if (r >= 0 && c >= 0) {
