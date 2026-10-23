@@ -99,6 +99,9 @@ void app_close_file(App *a);
 int app_open_file(App *a, const wchar_t *path);
 void app_apply_edits(App *a, HpCellEdit *edits, size_t n);
 void app_invalidate(App *a);
+#if defined(__GNUC__) || defined(__clang__)
+__attribute__((format(printf, 1, 2)))
+#endif
 void app_dbg(const char *fmt, ...);
 
 /* render.c */

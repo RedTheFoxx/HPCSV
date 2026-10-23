@@ -1,0 +1,16 @@
+# clangd configuration for HPCSV.
+#
+# Zed's C linter is clangd. The project is built with Zig (which uses the
+# MinGW target on Windows), so clangd must target the same ABI; otherwise it
+# assumes MSVC and the MinGW headers fail to parse.
+#
+# A compile_commands.json is still required for the include paths and the
+# Zig/MinGW system headers. Generate it with:
+#   .\scripts\gen_compile_commands.ps1
+CompileFlags:
+  Add:
+    - --target=x86_64-w64-windows-gnu
+
+Diagnostics:
+  UnusedIncludes: None
+  MissingIncludes: None

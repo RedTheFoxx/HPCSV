@@ -61,25 +61,23 @@ static void file_stamp(App *a, uint64_t *write_time, uint64_t *size) {
     *size = ((uint64_t)fad.nFileSizeHigh << 32) | fad.nFileSizeLow;
 }
 
-static void dbg_log(const char *fmt, ...) {
-    if (!getenv("HPCS_DEBUG")) return;
-    FILE *f = fopen("C:\\Users\\Red\\AppData\\Local\\Temp\\opencode\\hpcs.log", "a");
-    if (!f) return;
-    va_list ap;
-    va_start(ap, fmt);
-    vfprintf(f, fmt, ap);
-    va_end(ap);
-    fputc('\n', f);
-    fclose(f);
-}
-
 void app_dbg(const char *fmt, ...) {
     if (!getenv("HPCS_DEBUG")) return;
-    FILE *f = fopen("C:\\Users\\Red\\AppData\\Local\\Temp\\opencode\\hpcs.log", "a");
+    const char *tmp = getenv("TEMP");
+    char path[1024];
+    snprintf(path, sizeof(path), "%s\\hpcs.log", tmp ? tmp : "hpcs.log");
+    FILE *f = fopen(path, "a");
     if (!f) return;
     va_list ap;
     va_start(ap, fmt);
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
     vfprintf(f, fmt, ap);
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
     va_end(ap);
     fputc('\n', f);
     fclose(f);
@@ -353,7 +351,7 @@ static void edit_begin(App *a, const wchar_t *initial) {
     g_edit_proc = (WNDPROC)SetWindowLongPtrW(e, GWLP_WNDPROC, (LONG_PTR)edit_proc);
 
     size_t n = 0;
-    const char *txt = hpcs_cell_text(&a->doc, a->sel_row, a->sel_col, &n);
+    const char *txt = hpcs_cell_text(&a->doc, (uint32_t)a->sel_row, (uint32_t)a->sel_col, &n);
     wchar_t *cur = utf8n_to_wide(txt, n);
     if (initial && initial[0]) SetWindowTextW(e, initial);
     else if (cur) SetWindowTextW(e, cur);
@@ -729,7 +727,7 @@ int app_open_file(App *a, const wchar_t *path) {
     app_set_status(a, 0, L"%u rows \u00d7 %u cols \u00b7 %hs%ls",
                    a->doc.n_rows, a->doc.max_cols, dbuf, extra);
     InvalidateRect(a->hwnd, NULL, FALSE);
-    dbg_log("open: rows=%u cols=%u sel=(%d,%d) anchor=(%d,%d) dpi=%d",
+    app_dbg("open: rows=%u cols=%u sel=(%d,%d) anchor=(%d,%d) dpi=%d",
             a->doc.n_rows, a->doc.max_cols, a->sel_row, a->sel_col,
             a->anchor_row, a->anchor_col, a->dpi);
     return 1;
@@ -944,10 +942,6 @@ static void on_char(App *a, WPARAM ch) {
 
 /* --------------------------------------------------------------- window */
 
-static void update_scrollbars_now(App *a) {
-    app_scrollbars(a);
-}
-
 static LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     App *a = &g_app;
     switch (msg) {
@@ -970,8 +964,8 @@ static LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             static int logged = 0;
             if (!logged) {
                 logged = 1;
-                dbg_log("paint: w=%d h=%d sel=(%d,%d) anchor=(%d,%d) header=%d row=%d gutter=%d",
-                        rc.right, rc.bottom, a->sel_row, a->sel_col,
+                app_dbg("paint: w=%d h=%d sel=(%d,%d) anchor=(%d,%d) header=%d row=%d gutter=%d",
+                        (int)rc.right, (int)rc.bottom, a->sel_row, a->sel_col,
                         a->anchor_row, a->anchor_col, a->header_h, a->row_h, a->gutter_w);
             }
         }
@@ -1052,7 +1046,7 @@ static LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             if (a->scroll_x > maxx) a->scroll_x = maxx;
         } else {
             a->scroll_y -= (delta / WHEEL_DELTA) * a->row_h * 3;
-            int total = (int)(a->doc.n_rows > 0 ? (a->doc.n_rows - 1) * a->row_h : 0);
+            int total = a->doc.n_rows > 0 ? ((int)a->doc.n_rows - 1) * a->row_h : 0;
             int maxy = total - app_view_h(a);
             if (a->scroll_y < 0) a->scroll_y = 0;
             if (maxy < 0) maxy = 0;

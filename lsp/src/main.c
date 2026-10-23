@@ -54,18 +54,38 @@ static void badd(Buf *b, const char *s, size_t n) {
 
 static void bputs(Buf *b, const char *s) { badd(b, s, strlen(s)); }
 
+static void bprintf(Buf *b, const char *fmt, ...)
+#if defined(__GNUC__) || defined(__clang__)
+    __attribute__((format(printf, 2, 3)))
+#endif
+    ;
+
 static void bprintf(Buf *b, const char *fmt, ...) {
     char tmp[2048];
     va_list ap;
     va_start(ap, fmt);
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
     int n = vsnprintf(tmp, sizeof(tmp), fmt, ap);
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
     va_end(ap);
     if (n < 0) return;
     if ((size_t)n < sizeof(tmp)) { badd(b, tmp, (size_t)n); return; }
     char *big = (char *)malloc((size_t)n + 1);
     if (!big) return;
     va_start(ap, fmt);
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
     vsnprintf(big, (size_t)n + 1, fmt, ap);
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
     va_end(ap);
     badd(b, big, (size_t)n);
     free(big);
@@ -365,7 +385,7 @@ static int utf8_len_at(const char *s, size_t n, size_t i) {
     return len;
 }
 
-static int utf16_units(const char *s, size_t n, size_t i) {
+static int utf16_units(const char *s, size_t i) {
     unsigned char c = (unsigned char)s[i];
     return (c >= 0xF0) ? 2 : 1;
 }
@@ -379,7 +399,7 @@ static size_t offset_from_position(const char *s, size_t n, int line, int charac
     }
     int u = 0;
     while (off < n && u < character && s[off] != '\n') {
-        int units = utf16_units(s, n, off);
+        int units = utf16_units(s, off);
         if (u + units > character) break;
         u += units;
         off += (size_t)utf8_len_at(s, n, off);
@@ -396,7 +416,7 @@ static void position_from_offset(const char *s, size_t n, size_t off, int *line,
     }
     int u = 0;
     for (size_t i = ls; i < off;) {
-        u += utf16_units(s, n, i);
+        u += utf16_units(s, i);
         i += (size_t)utf8_len_at(s, n, i);
     }
     *line = l;
@@ -416,7 +436,7 @@ static void cell_span(const HpDoc *d, uint32_t row, uint32_t col, size_t *start,
 static int utf16_cols(const char *s, size_t n, size_t a, size_t b) {
     int u = 0;
     for (size_t i = a; i < b;) {
-        u += utf16_units(s, n, i);
+        u += utf16_units(s, i);
         i += (size_t)utf8_len_at(s, n, i);
     }
     return u;

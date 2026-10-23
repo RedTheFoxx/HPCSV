@@ -177,6 +177,36 @@ Windows :
 Après l'installation de Rust, **redémarrez Zed** pour qu'il voie `cargo`/`rustup` dans le
 `PATH`.
 
+### Linter C (clangd)
+
+Zed analyse le C avec **clangd**. Sur une machine sans Visual Studio / Windows SDK, clangd
+ne trouve ni `windows.h`, ni `stdio.h`, ni les en-têtes du projet : il affiche alors une
+avalanche de fausses erreurs. HPCSV compile avec Zig (cible MinGW), donc on donne à clangd
+la même cible et les en-têtes de Zig via une base de compilation :
+
+```powershell
+# Zig dans le PATH…
+.\scripts\gen_compile_commands.ps1
+
+# …ou chemin explicite
+.\scripts\gen_compile_commands.ps1 -Zig C:\tools\zig\zig.exe
+```
+
+Le script écrit `compile_commands.json` (gitignoré, spécifique à la machine) avec le bon
+`--target=x86_64-w64-windows-gnu`, les chemins d'inclusion du projet et les en-têtes
+MinGW livrés avec Zig. `.clangd` force la même cible pour les fichiers ouverts hors base.
+
+Après génération, rechargez clangd (`editor: restart language server`) ou Zed. Une tâche
+`HPCSV: regenerate clangd database` est fournie dans `.zed/tasks.json`.
+
+Le code compile sans aucun warning avec un jeu strict :
+
+```powershell
+zig cc -std=c11 -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-conversion `
+  -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -Wformat=2 -Werror `
+  -Icore/include -Iapp -c app/src/main.c -o "$env:TEMP\check.o"
+```
+
 ---
 
 ## Utilisation
