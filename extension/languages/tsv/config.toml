@@ -1,3 +1,3 @@
 name = "TSV"
-grammar = "tsv"
+grammar = "hpcs-tsv"
 path_suffixes = ["tsv", "tab"]

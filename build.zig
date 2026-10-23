@@ -85,6 +85,7 @@ pub fn build(b: *std.Build) void {
         app.addIncludePath(b.path("app"));
         app.linkLibrary(core);
         app.linkLibC();
+        app.subsystem = .Windows;
         app.linkSystemLibrary("user32");
         app.linkSystemLibrary("gdi32");
         app.linkSystemLibrary("shell32");

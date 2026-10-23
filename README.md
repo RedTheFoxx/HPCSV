@@ -152,13 +152,29 @@ cd extension
 cargo build --target wasm32-wasip2 --release
 ```
 
-Zed compile lui-même l'extension lors de l'installation. Sur les chemins Windows
-contenant des accents, MinGW peut échouer à linker les proc-macros ; dans ce cas :
+Zed compile lui-même l'extension lors de l'installation. Deux pièges fréquents sous
+Windows :
 
-```powershell
-$env:CARGO_TARGET_DIR = "$env:TEMP\hpcs-cargo-target"
-cargo +stable-x86_64-pc-windows-gnu build --target wasm32-wasip2 --release
-```
+1. **`link.exe` introuvable** : Rust utilise par défaut le toolchain MSVC, qui exige
+   Visual Studio. Utilisez le toolchain GNU (installé par rustup) :
+
+   ```powershell
+   rustup default stable-x86_64-pc-windows-gnu
+   rustup target add wasm32-wasip2
+   ```
+
+2. **Chemin du dépôt avec accents** (`Dépots`, par exemple) : MinGW peut échouer à
+   linker les proc-macros. Redirigez le répertoire de build vers un chemin ASCII :
+
+   ```powershell
+   $env:CARGO_TARGET_DIR = "$env:TEMP\hpcs-cargo-target"
+   cargo build --target wasm32-wasip2 --release
+   ```
+
+   Pour que Zed hérite de cette variable, lancez-le depuis ce terminal.
+
+Après l'installation de Rust, **redémarrez Zed** pour qu'il voie `cargo`/`rustup` dans le
+`PATH`.
 
 ---
 
@@ -261,6 +277,20 @@ Une édition de cellule ne réécrit **que** la représentation de cette cellule
   ce qui évite les fichiers tronqués et les lectures partielles par Zed.
 
 ---
+
+## Dépannage
+
+- **« hpcs-lsp was not found on PATH »** : `zig-out\bin` n'est pas dans le `PATH` du
+  processus Zed. Ajoutez-le, puis relancez Zed. Vérifiez avec
+  `Get-Command hpcs-lsp` dans le même terminal.
+- **Le bouton « open in spreadsheet » ne fait rien** : `hpcs-lsp` cherche `HPCSV.exe`
+  à côté de lui, puis `HPCSV_BIN`, puis dans le `PATH`. Définissez `HPCSV_BIN` avec le
+  chemin complet si nécessaire.
+- **Pas de diagnostics / coloration incohérente** : si l'extension communautaire `csv`
+  est aussi installée, Zed a deux fournisseurs pour le langage CSV. Désactivez l'autre
+  extension pour éviter l'ambiguïté.
+- **Zed ne compile pas l'extension** : voir la section « Extension Zed » (toolchain GNU
+  et chemin ASCII pour `CARGO_TARGET_DIR`).
 
 ## Limites et feuille de route
 

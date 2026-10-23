@@ -6,12 +6,16 @@ authors = ["HPCSV contributors"]
 description = "High Performance CSV: a fast C core, diagnostics, cell hover and a one-click spreadsheet view."
 repository = "https://github.com/hpcs/hpcs"
 
-[grammars.csv]
+themes = []
+icon_themes = []
+languages = ["languages/csv", "languages/tsv"]
+
+[grammars.hpcs-csv]
 repository = "https://github.com/tree-sitter-grammars/tree-sitter-csv"
 rev = "f6bf6e35eb0b95fbadea4bb39cb9709507fcb181"
 path = "csv"
 
-[grammars.tsv]
+[grammars.hpcs-tsv]
 repository = "https://github.com/tree-sitter-grammars/tree-sitter-csv"
 rev = "f6bf6e35eb0b95fbadea4bb39cb9709507fcb181"
 path = "tsv"
