@@ -2,6 +2,8 @@
 zig-out/
 build/
 extension/target/
+extension/grammars/
+extension/extension.wasm
 compile_commands.json
 *.pdb
 *.tmp

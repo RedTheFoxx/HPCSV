@@ -258,8 +258,9 @@ en-tête : redimensionner la colonne. Molette : vertical ; `Maj + molette` : hor
 
 ### 2. Extension Zed
 
-1. Compilez le projet et ajoutez `zig-out\bin` au `PATH` (ou définissez `HPCSV_BIN`
-   avec le chemin complet de `HPCSV.exe`).
+1. Compilez le projet (`zig build`). L'extension trouve `hpcs-lsp` automatiquement :
+   dans `zig-out\bin` du dépôt s'il est ouvert, sinon via `HPCSV_LSP` (chemin complet du
+   serveur), via le dossier de `HPCSV_BIN`, ou via le `PATH`.
 2. Dans Zed : `zed: extensions` → **Install Dev Extension** → sélectionnez le dossier
    `extension/`.
 3. Ouvrez un `.csv` : coloration, diagnostics et hover sont actifs.
@@ -268,9 +269,10 @@ en-tête : redimensionner la colonne. Molette : vertical ; `Maj + molette` : hor
 Pour lancer le tableur sans passer par l'action de code, une tâche est fournie dans
 `.zed/tasks.json` (palette → `task: spawn` → *HPCSV: open current file in spreadsheet*).
 
-> L'extension appelle `hpcs-lsp` depuis le `PATH`. Si Zed affiche
-> « hpcs-lsp was not found on PATH », c'est que `zig-out\bin` n'est pas dans le `PATH`
-> du processus Zed (relancez Zed après avoir modifié le `PATH`).
+> L'extension résout `hpcs-lsp` sans qu'il soit forcément dans le `PATH` : `HPCSV_LSP`
+> (chemin du serveur), dossier de `HPCSV_BIN`, `PATH`, puis `zig-out\bin` du dépôt HPCSV
+> ouvert. Si Zed affiche « hpcs-lsp was not found », le binaire n'a pas été compilé
+> (`zig build`) et aucun des replis n'est disponible.
 
 ### 3. CLI
 
@@ -323,9 +325,10 @@ Une édition de cellule ne réécrit **que** la représentation de cette cellule
 
 ## Dépannage
 
-- **« hpcs-lsp was not found on PATH »** : `zig-out\bin` n'est pas dans le `PATH` du
-  processus Zed. Ajoutez-le, puis relancez Zed. Vérifiez avec
-  `Get-Command hpcs-lsp` dans le même terminal.
+- **« hpcs-lsp was not found »** : le binaire n'a pas été compilé. Lancez `zig build` :
+  l'extension le détecte dans `zig-out\bin` du dépôt HPCSV ouvert. Sinon, ajoutez
+  `zig-out\bin` au `PATH` (puis relancez Zed), définissez `HPCSV_LSP` avec le chemin
+  complet du serveur, ou `HPCSV_BIN` avec le dossier contenant `hpcs-lsp`.
 - **Le bouton « open in spreadsheet » ne fait rien** : `hpcs-lsp` cherche `HPCSV.exe`
   à côté de lui, puis `HPCSV_BIN`, puis dans le `PATH`. Définissez `HPCSV_BIN` avec le
   chemin complet si nécessaire.

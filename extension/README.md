@@ -21,7 +21,10 @@ zig build -Doptimize=ReleaseFast
 # then put zig-out/bin on PATH, or set HPCSV_BIN to the full path of HPCSV.exe
 ```
 
-The language server looks for `HPCSV.exe` next to itself, then `HPCSV_BIN`, then `PATH`.
+The extension finds `hpcs-lsp` on its own: `HPCSV_LSP` (full path to the server), the
+directory of `HPCSV_BIN`, `$PATH`, then the `zig-out/bin` of the HPCSV repository when it
+is the opened worktree. The language server looks for `HPCSV.exe` next to itself, then
+`HPCSV_BIN`, then `PATH`.
 
 ## Why a native app?
 

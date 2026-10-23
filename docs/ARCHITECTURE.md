@@ -142,8 +142,9 @@ avec adresse, type, longueur et tableau de la ligne.
 
 - `extension.toml` déclare deux grammaires (sous-dossiers `csv` et `tsv` du dépôt
   tree-sitter-grammars, via le champ `path`) et un serveur de langage commun.
-- `src/lib.rs` : `language_server_command` résout `hpcs-lsp` avec `Worktree::which` ;
-  Zed compile le crate en `wasm32-wasip2`.
+- `src/lib.rs` : `language_server_command` résout `hpcs-lsp` dans l'ordre `HPCSV_LSP`,
+  dossier de `HPCSV_BIN`, `$PATH` (`Worktree::which`), puis `zig-out/bin` du dépôt ouvert
+  (détecté via `build.zig`) ; Zed compile le crate en `wasm32-wasip2`.
 - `languages/*/highlights.scm` : chaînes, nombres, flottants, booléens, séparateurs.
 
 ## 6. Synchronisation et conflits
