@@ -1,7 +1,7 @@
 const std = @import("std");
 
 const cflags = [_][]const u8{
-    "-std=c11",
+    "-std=c23",
     "-Wall",
     "-Wextra",
     "-Wno-unused-parameter",

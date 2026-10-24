@@ -10,7 +10,7 @@ A dependency-free C core, plus a Zed extension that keeps the editor tab as the 
 <p>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/RedTheFoxx/HPCSV?style=flat-square&color=3b82f6" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/Zig-0.14.1-f7a41d?style=flat-square&logo=zig&logoColor=white" alt="Zig 0.14.1">
-  <img src="https://img.shields.io/badge/C-11-00599C?style=flat-square&logo=c&logoColor=white" alt="C11">
+  <img src="https://img.shields.io/badge/C-23-00599C?style=flat-square&logo=c&logoColor=white" alt="C23">
   <img src="https://img.shields.io/badge/Windows-10%2F11-0078D6?style=flat-square&logo=windows11&logoColor=white" alt="Windows 10/11">
   <img src="https://img.shields.io/badge/Zed-extension-084CCF?style=flat-square&logo=zedindustries&logoColor=white" alt="Zed extension">
   <a href="https://github.com/RedTheFoxx/HPCSV/stargazers"><img src="https://img.shields.io/github/stars/RedTheFoxx/HPCSV?style=flat-square&color=f5c518" alt="Stars"></a>
@@ -147,7 +147,7 @@ Design details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 ## Building
 
 Requirements: **Zig 0.14.1** (the `build.zig` targets its API) · **Windows 10/11** for the
-native spreadsheet (core and LSP are portable C11) · **Rust** (`wasm32-wasip2`) for the
+native spreadsheet (core and LSP are portable C23) · **Rust** (`wasm32-wasip2`) for the
 extension.
 
 ```powershell

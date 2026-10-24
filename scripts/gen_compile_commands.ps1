@@ -40,7 +40,7 @@ foreach ($dir in $sysIncludes) {
 $common = @(
     "clang",
     "--target=$Target",
-    "-std=c11",
+    "-std=c23",
     "-Wall",
     "-Wextra",
     "-Wpedantic",

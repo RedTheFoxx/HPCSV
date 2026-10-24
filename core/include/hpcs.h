@@ -1,7 +1,7 @@
 /*
  * HPCSV core - high performance CSV engine.
  *
- * Pure C11, no dependencies. Zero-copy parsing: every cell keeps byte
+ * Pure C23, no dependencies. Zero-copy parsing: every cell keeps byte
  * offsets into the document buffer. Editing rewrites only the affected
  * byte ranges and patches every following offset, so a document of
  * hundreds of megabytes can be edited without a full reparse.
