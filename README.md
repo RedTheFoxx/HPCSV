@@ -102,7 +102,7 @@ vertical; `Shift + wheel`: horizontal.
 
 ## Performance
 
-`ReleaseFast` build, Zig 0.17.0, 80.26 MiB file (1,000,001 rows × 8 columns):
+`ReleaseFast` build, 80.26 MiB file (1,000,001 rows × 8 columns) — measured on Zig 0.14.1:
 
 | Operation | Time |
 | --- | --- |
