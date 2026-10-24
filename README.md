@@ -208,6 +208,12 @@ files outside the database. Then reload clangd (`editor: restart language server
 
 ---
 
+## Author
+
+[**Red**](https://github.com/RedTheFoxx) — morisseau.jeremy@gmail.com
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

@@ -2,6 +2,9 @@
 name = "hpcs"
 version = "0.1.0"
 edition = "2021"
+authors = ["Red <morisseau.jeremy@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/RedTheFoxx/HPCSV"
 
 [lib]
 crate-type = ["cdylib"]

@@ -2,7 +2,7 @@ id = "hpcs"
 name = "HPCSV"
 version = "0.1.0"
 schema_version = 1
-authors = ["HPCSV contributors"]
+authors = ["Red <morisseau.jeremy@gmail.com>"]
 description = "High Performance CSV: a fast C core, diagnostics, cell hover and a one-click spreadsheet view."
 repository = "https://github.com/hpcs/hpcs"
 
