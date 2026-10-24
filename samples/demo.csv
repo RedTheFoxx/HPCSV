@@ -1,7 +1,7 @@
 ﻿id,name,email,amount,joined,active,note,city
-1,Hana Moreau,Hana.Moreau1@example.com,1663.04,2024-01-02,true,standard,Nantes
-2,Émile Michel,Émile.Michel2@example.com,1822.44,2024-01-03,true,standard,Paris
-3,Bob Roux,Bob.Roux3@example.com,1976.42,2024-01-04,false,standard,Nantes
+1,Hana Moreau,Hana.Moreau1@example.com,1663.04,2024-01-02,false,standard,Nantes
+2,Émile Michel,Émile.Michel2@example.com,1822.44,2024-01-03,true,standard,Rennes
+3,Bob Roux,Bob.Roux3@example.com,1976.42,2024-01-04,false,standard,Segré
 4,Ivan Dubois,Ivan.Dubois4@example.com,2122.37,2024-01-05,true,standard,Paris
 5,Fatima Simon,Fatima.Simon5@example.com,2257.84,2024-01-06,true,standard,Nantes
 6,Chloé Leroy,Chloé.Leroy6@example.com,2380.53,2024-01-07,false,standard,Paris
