@@ -3,7 +3,7 @@ name = "HPCSV"
 version = "0.1.0"
 schema_version = 1
 authors = ["Red <morisseau.jeremy@gmail.com>"]
-description = "High Performance CSV: a fast C core, diagnostics, cell hover and a one-click spreadsheet view."
+description = "A high performance, native C spreadsheet interpreter and editor for Zed."
 repository = "https://github.com/hpcs/hpcs"
 
 themes = []
